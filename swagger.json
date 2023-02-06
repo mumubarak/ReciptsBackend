@@ -1,0 +1,267 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Parveen App API",
+    "description": "Find out how your APIs work",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "tags": [
+    {
+      "name": "User", 
+      "description": "API for users in the system"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+      "Bearer":{
+        "type": "apiKey",
+        "in": "headers",
+        "name": "authorization",
+       "description":"Enter the token with the Bearer"
+      }
+  },
+  "paths": {
+    "/register": {
+      "post": {
+        "summary": "Register user",
+        "tags": [
+          "User"
+        ],
+        "description": "register user in system",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "register user",
+            "schema": {
+              "$ref": "#/definitions/registerUser"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "$ref": "#/definitions/registerUser"
+            }
+          },
+          "401":{
+            "description": "register details are not valid!!"
+          },
+          "404":{
+            "description": "Email is not registered!"
+          },
+          "500":{
+            "description": "User register failed!!"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login user",
+        "tags": [
+          "User"
+        ],
+        "description": "Login user in system",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Login user",
+            "schema": {
+              "$ref": "#/definitions/userLogin"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "$ref": "#/definitions/userLogin"
+            }
+          },
+          "401":{
+            "description": "Login details are not valid!!"
+          },
+          "404":{
+            "description": "Email is not registered!"
+          },
+          "500":{
+            "description": "User login failed!!"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "security":{
+         "Bearer": []
+        },
+        "summary": "view user",
+        "tags": [
+          "User"
+        ],
+        "description": " viwe user in system",
+        "parameters": [
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "user view Success",
+            "schema": {
+              "$ref": "#/definitions/userRegister"
+            }
+          }
+        }
+      }
+    },
+    "/addCategory": {
+      "post": {
+        "summary": "category add",
+        "tags": [
+          "Category"
+        ],
+        "description": "category user in system",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "body",
+            "description": "category view",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "category Success",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          },
+          "401":{
+            "description": "category details are not valid!!"
+          }
+        }
+      }
+    },
+    "/addVendor": {
+      "post": {
+        "summary": "vendor add",
+        "tags": [
+          "Vendor"
+        ],
+        "description": "vendor user in system",
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "body",
+            "description": "vendor view",
+            "schema": {
+              "$ref": "#/definitions/vendor"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "category Success",
+            "schema": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "401":{
+            "description": "vendor details are not valid!!"
+          }
+        }
+      }
+    }
+
+
+
+  },
+  "definitions": {
+    "registerUser": {
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string",
+          "enum":"['male','female','others']"
+        },
+        "dateOfBirth": {
+          "type": "date"
+        },
+        "status": {
+          "type": "string",
+          "enum":"['active','inactive','frequent']"
+        }
+      }
+    },
+    "userLogin": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }     
+  }
+},
+"category": {
+  "properties": {
+    "categoryName": {
+      "type": "string"
+    },
+    "categoryImg": {
+      "type": "string"
+    }     
+}
+},
+"vendor": {
+  "properties": {
+    "vendorName": {
+      "type": "string"
+    },
+    "vendorImg": {
+      "type": "string"
+    }     
+}
+}
+}
+}
