@@ -3,38 +3,45 @@ const vendorModel = require(`../model/vendor`);
 exports.addRecipt = async function (req, res, next) {
   try {
     
-   const vendorObject = await vendorModel.findOne({"vendorName": req.body.vendor});
-    /* .lean().exec(function (err, results) {
+   const vendorObject =  vendorModel.findById(req.body.vendor)
+    .lean().exec(async function (err, results) {
     
-      if (err)
-        return console.error(err);
+      if (err){
+        res.status(400).json({ message: "invalid vendor" });
+      }else{
+        try {
+console.log(results);
+          const reciptObject =  await reciptModel.insertMany({
+            //need to add a validation for body inputs
+           // serialNumber:req.body.serialNumber,
+            vendor: results._id,
+            category: req.query.categoryId,
+            tax: req.body.tax,
+            service: req.body.service,
+            amount: req.body.amount,
+            totalAmount: req.body.amount,
+            status:"ACTIVE",
+            userId:  req.userId,
+            items: req.body.items,
+          });
+          console.log (reciptObject);
+          res.status(201).json({ reciptObject,message: "Recipt Successfully Inserted" });
+        } catch (error) {
+          console.log (error);
+      
+          res.status(500).json({ message: "catch error requesting an order reset" });
+        }
+      }
      
-    });*/
-    var vendorObj= {
-      "vendorName":vendorObject.vendorName, "vendorImg":vendorObject.vendorImg
-    };
-    
-
-    const reciptObject = await reciptModel.insertMany({
-      //need to add a validation for body inputs
-     // serialNumber:req.body.serialNumber,
-      vendor: vendorObject.id,
-      category: req.query.categoryId,
-      tax: req.body.tax,
-      service: req.body.service,
-      amount: req.body.amount,
-      totalAmount: req.body.amount,
-      status:"ACTIVE",
-      userId:  req.userId,
-      items: req.body.items,
     });
-    console.log (reciptObject);
-    res.status(201).json({ reciptObject,message: "Recipt Successfully Inserted" });
+    
   } catch (error) {
     console.log (error);
 
-    res.status(500).json({ message: "catch error requesting an order reset" });
-  }
+    res.status(400).json({ message: "Invalid Vendor" });
+  } 
+
+
 };
 
 exports.getReciptById = async function (req, res, next) {
