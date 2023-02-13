@@ -6,23 +6,8 @@ var storageCategory =  multer.diskStorage({
     cb(null, 'images/img_category');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname))
-  }
+    cb(null, file.originalname);  }
 })
-var uploadCategory = multer({ 
-  storage: storageCategory,
-  limits:{ fileSize: 1000000000 },
-    fileFilter: function(req, file, cb){
-        if (
-            file.mimetype === 'image/png' ||
-            file.mimetype === 'image/jpg' ||
-            file.mimetype === 'image/jpeg'
-          ) {
-            cb(null, true);
-          } else {
-            cb(null, false);
-          }
-    }
- });
+var uploadCategory = multer({storage: storageVendor}).single('image');
 
 module.exports = uploadCategory

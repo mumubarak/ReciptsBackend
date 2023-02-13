@@ -4,7 +4,7 @@ const fs = require("fs");
 exports.addCategory = async (req, res) => {
   try {  
     const  categoryName = req.body.categoryName;
-    const categoryImg = req.file.filename;
+    const categoryImg = '/opt/ReciptsBackend/images/img_category/'+ req.file.filename;
       
      const category =await categoryModel.create({
       categoryName,
