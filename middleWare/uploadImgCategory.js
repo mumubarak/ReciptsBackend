@@ -8,6 +8,6 @@ var storageCategory =  multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, file.originalname);  }
 })
-var uploadCategory = multer({storage: storageVendor}).single('image');
+var uploadCategory = multer({storage: storageCategory}).single('image');
 
 module.exports = uploadCategory
