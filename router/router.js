@@ -27,7 +27,7 @@ app.get(`/profile`,auth,userController.getProfile);
 
 // Resturant Routers
 //app.post(`/restaurant`,resturantController)
-app.post(`/addCategory`,auth,uploadCategory.single('file'),categoryController.addCategory)
+app.post(`/addCategory`,auth,uploadCategory,categoryController.addCategory)
 app.get(`/getCategories`,categoryController.getAllCategories)
 app.post(`/addVendor`,auth,uploadVendor,vendorController.addVendor)
 app.get(`/getVendors`,vendorController.getAllVendors)
