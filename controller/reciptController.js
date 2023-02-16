@@ -97,23 +97,35 @@ exports.getCustomRecipts = async function (req, res, next) {
   try {
     console.log(req.userId);
     var criteriaObject = {};
+    stDT='1900-03-20';
+    endDT='2100-03-20';
     if (req.body.vendor) {
       criteriaObject["vendor"] = req.body.vendor;
     }
     if (req.body.category) {
       criteriaObject["category"] = req.body.category;
     }
-    if (req.body.user) {
+    if (req.userId) {
       criteriaObject["userId"] = req.userId;
+     
+    }
+    if (req.body.startDate){
+      stDT =new Date(req.body.startDate) ;
+    }
+    if (req.body.endDate){
+      endDT =new Date(req.body.endDate);
     }
     //const fromDate = req.fromDate;
-    console.log(criteriaObject);
+    console.log(stDT);
+    console.log(endDT)
 
-    const reciptObject = reciptModel.find(criteriaObject).populate({path: "vendor"}).populate({path: "category"})
+      //criteriaObject["userId"] = req.userId;
+      /*dateTime:{$gt: stDT},dateTime:{$lt: endDT},*/
+    const reciptObject = reciptModel.find({dateTime:{$gt: stDT},dateTime:{$lt: endDT}}/*,{dateTime:{$lt: endDT}},criteriaObject*/).populate({path: "vendor"}).populate({path: "category"})
       .lean().exec(function (err, results) {
         if (err) return console.error(err)
         try {
-          console.log(results)
+          
           res.status(200).json({ message: "Recipt Successfully retrived", results });
 
         } catch (error) {
