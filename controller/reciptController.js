@@ -1,5 +1,6 @@
 const reciptModel = require(`../model/recipt`);
 const vendorModel = require(`../model/vendor`);
+const categoryModel = require(`../model/category`);
 exports.addRecipt = async function (req, res, next) {
   try {
 
@@ -10,12 +11,16 @@ exports.addRecipt = async function (req, res, next) {
           res.status(400).json({ message: "invalid vendor" });
         } else {
           try {
-            console.log(results);
+            const cat =await getCategory(req.body.category);
+            
+
+            //console.log("from add"+ await getCategory(req.body.category));
+           console.log("from addcat"+ cat._id);
             const reciptObject = await reciptModel.insertMany({
               //need to add a validation for body inputs
               // serialNumber:req.body.serialNumber,
               vendor: results._id,
-              category: req.query.categoryId,
+              category: cat._id,
               tax: req.body.tax,
               service: req.body.service,
               amount: req.body.amount,
@@ -50,7 +55,7 @@ exports.getReciptById = async function (req, res, next) {
     const reciptId = req.query.id
     const reciptObject = reciptModel.findById(reciptId).populate({
       path: "vendor"
-    })
+    }).populate({path: "category"})
       .lean().exec(function (err, results) {
         if (err)
           return console.error(err);
@@ -72,7 +77,7 @@ exports.getAllRecipts = async function (req, res, next) {
 
     const reciptObject = reciptModel.find({ userId: req.userId }).populate({
       path: "vendor"
-    })
+    }).populate({path: "category"})
       .lean().exec(function (err, results) {
         if (err) return console.error(err)
         try {
@@ -96,7 +101,7 @@ exports.getCustomRecipts = async function (req, res, next) {
       criteriaObject["vendor"] = req.body.vendor;
     }
     if (req.category !== '') {
-      criteriaObject["category"] = req.category;
+      criteriaObject["category"] = req.body.category;
     }
     if (req.user !== '') {
       criteriaObject["userId"] = req.userId;
@@ -104,9 +109,7 @@ exports.getCustomRecipts = async function (req, res, next) {
     //const fromDate = req.fromDate;
     console.log(criteriaObject);
 
-    const reciptObject = reciptModel.find(criteriaObject).populate({
-      path: "vendor"
-    })
+    const reciptObject = reciptModel.find(criteriaObject).populate({path: "vendor"}).populate({path: "category"})
       .lean().exec(function (err, results) {
         if (err) return console.error(err)
         try {
@@ -152,9 +155,9 @@ exports.getReciptByCategoryId = async function (req, res, next) {
 
     if (reciptObject) {
       const recipt = reciptModel.findById({ reciptObject: reciptObject }).populate({
-        path: 'recipt'
+        path: 'vendor'
       }
-      ).lean()
+      ).populate({path: "category"}).lean()
       console.log(recipt)
       res.status(200).json({ recipt, message: "Recipt Successfully retrived" });
 
@@ -190,4 +193,14 @@ exports.getReciptByVendorId = async function (req, res, next) {
   } catch (error) {
     res.status(500).json({ message: "catch error requesting an order reset" });
   }
+};
+
+
+const getCategory = async function (categoryId) {
+  
+
+    const categoryObject = categoryModel.findById(categoryId);
+      return categoryObject
+
+
 };

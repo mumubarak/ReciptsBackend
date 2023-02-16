@@ -28,7 +28,7 @@ const reciptSchema = mongoose.Schema(
     //vendor:{type: mongoose.Schema.Types.ObjectId,ref: 'vendor',require:true},
    
     //category: { name: "String",image:"string" },
-    category: {type: mongoose.Schema.Types.ObjectId,ref: 'category',require:true},
+    category: {type: Schema.Types.ObjectId, ref: 'category'},
 
   },
   {
