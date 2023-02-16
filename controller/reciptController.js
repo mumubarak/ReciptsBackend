@@ -97,13 +97,13 @@ exports.getCustomRecipts = async function (req, res, next) {
   try {
     console.log(req.userId);
     var criteriaObject = {};
-    if (req.vendor !== '') {
+    if (req.body.vendor !== '') {
       criteriaObject["vendor"] = req.body.vendor;
     }
-    if (req.category !== '') {
+    if (req.body.category !== '') {
       criteriaObject["category"] = req.body.category;
     }
-    if (req.user !== '') {
+    if (req.body.user !== '') {
       criteriaObject["userId"] = req.userId;
     }
     //const fromDate = req.fromDate;
