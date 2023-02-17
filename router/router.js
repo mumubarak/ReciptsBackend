@@ -42,8 +42,10 @@ app.post('/addRecipt',auth,reciptContoller.addRecipt)//1
 app.get('/reciptByCategory',auth,reciptContoller.getReciptByCategoryId)//1
 app.get('/reciptreciptByVendor/:vendor',auth,reciptContoller.getReciptByVendorId)//1
 
-//app.get('/getPieChart',auth,reciptAnalysisController)
-//app.get('/getLineChart',auth,reciptAnalysisController)
+app.get('/getPieChart',auth,reciptAnalysisController.getPieCharts)
+app.get('/getLineChart',auth,reciptAnalysisController.getLineCharts)
+app.post('/addPieChart',auth,reciptAnalysisController.addPieCharts)
+app.post('/addLineChart',auth,reciptAnalysisController.addLineCharts)
 
 app.use('/api-docs', swaggerUi.serve);
 app.get('/api-docs', swaggerUi.setup(swaggerDocument));

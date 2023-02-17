@@ -1,55 +1,70 @@
-const reciptModel = require(`../model/reciptAnalysis`);
+const linechartModel = require(`../model/linechart`);
+const piechartModel = require(`../model/piechart`);
 
-exports.getPieChart = async function (req, res, next) {
+exports.getLineCharts = async function (req, res, next) {
   try {
-    const id = req.body.id;
-    const resets = await reciptModel.find({ userId: req.userId });
-    resets.map((item) => {
-      item.resetDetails.map((reset) => {
-        if (id == reset._id) {
-          res.status(201).json({ message: "reset ready details", reset });
+    const lineChart = await linechartModel.findOne({});
+    /*lineChart.map((item) => {
+      item.lineChart.map((lchart) => {
+        if (id == lchart._id) {
+          res.status(201).json({ message: "reset ready details", lineChart });
         }
       });
-    });
+    });*/
+    res.status(201).json({ message: "lineChart", lineChart });
   } catch (error) {
-    res.status(500).json({ message: "catch error requesting an order reset" });
+    res.status(500).json({ message: "catch error lineChart" });
   }
 };
 
-exports.getUserObject = async function (req, res, next) {
+exports.getPieCharts = async function (req, res, next) {
   try {
-      const userId = req.body.userId
-
-      const _userDB = await User.findById(userId)
-
-      if (!_userDB) {
-          const message = getStatusAndErrorMessage("all_error_msg_user_is_not_exist", req.query.language)
-          return res.status(401).send({
-              status: "USER_NOT_EXISTS",
-              ...message
-          })
-      }
-
-      let result = {
-          id: _userDB._id,
-          email: _userDB.email,
-          mobile: _userDB.mobile,
-          firstName: _userDB.firstName,
-          lastName: _userDB.lastName,
-          isVerified: _userDB.isEmailVerified || _userDB.isMobileVerified
-      }
-
-      return res.status(200).json({
-          status: "OK",
-          result: result
+    const pieChart = await piechartModel.findOne({});
+    /*lineChart.map((item) => {
+      item.lineChart.map((lchart) => {
+        if (id == lchart._id) {
+          res.status(201).json({ message: "reset ready details", lineChart });
+        }
       });
-
-  } catch (err) {
-      console.log("authenticationV1.4.js====>getUserObject", err);
-      let message = getStatusAndErrorMessage('all_error_mg_general', req.query.language);
-      res.status(500).json({
-          status: "SERVER_ERROR",
-          ...message
-      });
+    });*/
+    res.status(201).json({ message: "pieChart  details", pieChart });
+  } catch (error) {
+    res.status(500).json({ message: "catch error pieChart" });
   }
-}
+};
+exports.addLineCharts = async function (req, res, next) {
+  try {
+   
+    const linechartObject = await linechartModel.insertMany({
+      
+      status: "ACTIVE",
+      userId: req.userId,
+      lineChart: req.body.lineChart,
+    });
+    console.log(linechartObject);
+    res.status(201).json({ linechartObject, message: "linechartObject Successfully Inserted" });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: "catch error linechartObject" });
+  }
+};
+
+exports.addPieCharts = async function (req, res, next) {
+  try {
+   
+    const piechartObject = await piechartModel.insertMany({
+      
+      status: "ACTIVE",
+      userId: req.userId,
+      pieChart: req.body.pieChart
+    });
+    console.log(piechartObject);
+    res.status(201).json({ piechartObject, message: "piechartObject Successfully Inserted" });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: "catch error piechartObject" });
+  }
+};
+
