@@ -4,7 +4,7 @@ const categoryModel = require(`../model/category`);
 exports.addRecipt = async function (req, res, next) {
   try {
 
-    const vendorObject = vendorModel.findById(req.body.vendor)
+    const vendorObject = vendorModel.findOne({vendorName:req.body.vendor})
       .lean().exec(async function (err, results) {
 
         if (err) {
@@ -211,7 +211,7 @@ exports.getReciptByVendorId = async function (req, res, next) {
 const getCategory = async function (categoryId) {
   
 
-    const categoryObject = categoryModel.findById(categoryId);
+    const categoryObject = categoryModel.findOne({categoryName: categoryId});
       return categoryObject
 
 
